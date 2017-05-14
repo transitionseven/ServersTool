@@ -1,8 +1,72 @@
 ﻿<Window x:Class="ServersTool.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow"  Width="550" Height="400"
+        xmlns:cal="http://www.caliburnproject.org"
+        WindowStartupLocation="CenterScreen"
+        xmlns:view="clr-namespace:ServersTool.Views">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="LightGray">
+            <StackPanel Orientation="Horizontal">
+                <Menu Background="LightGray" Margin="5">
+                    <MenuItem Header="新建服务器"  Padding="5"  cal:Message.Attach="[Event Click]=[Action NewServer_Click($view,$eventArgs)]"/>
+                    <MenuItem Header="启动服务器"  Padding="5" cal:Message.Attach="[Event Click]=[Action ServerStart_Click($view,$eventArgs)]"/>
+                    <MenuItem Header="关闭服务器"  Padding="5"  cal:Message.Attach="[Event Click]=[Action ServerClose_Click($view,$eventArgs)]"/>
+                    <MenuItem Header="帮助" Padding="5" cal:Message.Attach="[Event Click]=[Action Help_Click($view,$eventArgs)]"/>
+                </Menu>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0">
+                    <view:ServersTreeView DataContext="{Binding }"/>
+                </Border>
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0">
+                            <GroupBox Header="数据接收窗口">
+                                <TextBox Text="{Binding SelectServer.ReceiveText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                            </GroupBox>
+                        </Border>
+                        <GridSplitter Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="0"></GridSplitter>
+                        <Border Grid.Row="1">
+                            <GroupBox Header="数据发送窗口">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0">
+                                        <TextBox Text="{Binding SelectServer.SendText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <Button Content="发送" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Send_Click($view,$eventArgs)]"/>
+                                            <Button Content="添加" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Add_Click($view,$eventArgs)]"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </GroupBox>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2">
+            <TextBlock Text=" Copyright (c) 2017 Lrsitod. All rights reserved." />
+        </Border>
     </Grid>
 </Window>

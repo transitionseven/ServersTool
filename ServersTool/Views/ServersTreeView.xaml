@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="ServersTool.Views.ServersTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:cal="http://www.caliburnproject.org"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type TreeViewItem}">
+                <Setter Property="IsExpanded" Value="True"/>
+            </Style>
+            
+            <HierarchicalDataTemplate x:Key="ChildTemplate" >
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="br" VerticalAlignment="Center">
+                        <Grid>
+                            <TextBlock />
+                        </Grid>
+                    </Border>
+                    <TextBlock Text="{Binding Name}" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="GroupsTemplate" ItemsSource="{Binding Children}" ItemTemplate="{StaticResource ChildTemplate}">
+                <StackPanel>
+                    <TextBlock Text="{Binding IpEndPort}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="RootTemplate" ItemsSource="{Binding ClientsList}" ItemTemplate="{StaticResource GroupsTemplate}">
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="br" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding IpEndPort}"/>
+                    </Border>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="2" Margin="2">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TreeView x:Name="ServerTree" BorderThickness="1,0,0,0" ItemsSource="{Binding ServersList}" ItemTemplate="{StaticResource RootTemplate}" 
+                      > <!--cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($view,$eventArgs)]"-->
+              
+            </TreeView>
+        </ScrollViewer>
+    </Border>
+</UserControl>
