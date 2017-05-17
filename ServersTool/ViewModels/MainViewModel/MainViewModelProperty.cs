@@ -13,6 +13,39 @@ namespace ServersTool.ViewModels
     public class MainViewModelProperty:PropertyChangedBase
     {
         public AsyncTCPServer Server = null;
+        private string keyText;
+        public string KeyText
+        {
+            get { return keyText; }
+            set
+            {
+                keyText = value;
+                NotifyOfPropertyChange(() => KeyText);
+            }
+        }
+
+        private string valueText;
+        public string ValueText
+        {
+            get { return valueText; }
+            set
+            {
+                valueText = value;
+                NotifyOfPropertyChange(() => ValueText);
+            }
+        }
+
+
+        private bool isHaveClent = false;
+        public bool IsHaveClent
+        {
+            get { return isHaveClent; }
+            set
+            {
+                isHaveClent = value;
+                NotifyOfPropertyChange(() => IsHaveClent);
+            }
+        }
 
         private ObservableCollection<ServersInfo> serversList = new ObservableCollection<ServersInfo>();
         public ObservableCollection<ServersInfo> ServersList
@@ -40,6 +73,29 @@ namespace ServersTool.ViewModels
 
     public class ServersInfo:PropertyChangedBase
     {
+        private bool isStart = false;
+        public bool IsStart
+        {
+            get { return isStart; }
+            set
+            {
+                isStart = value;
+                NotifyOfPropertyChange(() => IsStart);
+            }
+        }
+
+
+        private bool isConnect = false;
+        public bool IsConnect
+        {
+            get { return isConnect; }
+            set
+            {
+                isConnect = value;
+                NotifyOfPropertyChange(() => IsConnect);
+            }
+        }
+
         private IPAddress iPAddr;
         public IPAddress IPAddr
         {
@@ -121,6 +177,17 @@ namespace ServersTool.ViewModels
 
     public class ClientsInfo : PropertyChangedBase
     {
+        private bool isConnect = false;
+        public bool IsConnect
+        {
+            get { return isConnect; }
+            set
+            {
+                isConnect = value;
+                NotifyOfPropertyChange(() => IsConnect);
+            }
+        }
+
         private IPAddress iPAddr;
         public IPAddress IPAddr
         {

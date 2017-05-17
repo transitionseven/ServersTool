@@ -12,31 +12,42 @@
                 <Setter Property="IsExpanded" Value="True"/>
             </Style>
             
-            <HierarchicalDataTemplate x:Key="ChildTemplate" >
-                <StackPanel Orientation="Horizontal">
-                    <Border x:Name="br" VerticalAlignment="Center">
-                        <Grid>
-                            <TextBlock />
-                        </Grid>
-                    </Border>
-                    <TextBlock Text="{Binding Name}" />
-                </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="GroupsTemplate" ItemsSource="{Binding Children}" ItemTemplate="{StaticResource ChildTemplate}">
+          
+            <HierarchicalDataTemplate x:Key="GroupsTemplate">
                 <StackPanel>
-                    <TextBlock Text="{Binding IpEndPort}"/>
+                    <TextBlock Text="{Binding IpEndPort}">
+                        <TextBlock.Resources>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsConnect, Mode=TwoWay}" Value="true">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Resources>
+                    </TextBlock>
                 </StackPanel>
             </HierarchicalDataTemplate>
             <HierarchicalDataTemplate x:Key="RootTemplate" ItemsSource="{Binding ClientsList}" ItemTemplate="{StaticResource GroupsTemplate}">
                 <StackPanel Orientation="Horizontal">
                     <Border x:Name="br" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding IpEndPort}"/>
+                        <TextBlock Text="{Binding IpEndPort}">
+                            <TextBlock.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStart, Mode=TwoWay}" Value="true">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Resources>
+                        </TextBlock>
                     </Border>
                 </StackPanel>
             </HierarchicalDataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="2" Margin="2">
+    <Border BorderBrush="Gray" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <TreeView x:Name="ServerTree" BorderThickness="1,0,0,0" ItemsSource="{Binding ServersList}" ItemTemplate="{StaticResource RootTemplate}" 
                       > <!--cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($view,$eventArgs)]"-->
