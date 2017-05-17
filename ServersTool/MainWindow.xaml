@@ -55,7 +55,8 @@
                                     <Border Grid.Column="1">
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                             <Button Content="发送" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Send_Click($view,$eventArgs)]"/>
-                                            <Button Content="添加" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Add_Click($view,$eventArgs)]"/>
+                                            <Button Content="添加到指令库" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Add_Click($view,$eventArgs)]"/>
+                                            <CheckBox Content="启用指令库" Margin="10" />
                                         </StackPanel>
                                     </Border>
                                 </Grid>

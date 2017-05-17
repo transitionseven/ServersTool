@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using NetFrame.Net.TCP.Listener.Asynchronous;
 using System.Windows;
 using System.Net;
-
-
+using FileOperate.Ini;
+using System.IO;
 namespace ServersTool.ViewModels
 {
     public class MainViewModel:MainViewModelFunc
@@ -17,7 +17,8 @@ namespace ServersTool.ViewModels
             InitServer();
         }
 
-
+        private string path = Environment.CurrentDirectory + "\\protocol.ini";
+        private string section = "protocol";
         public void NewServer_Click(object sender,RoutedEventArgs e)
         {
             ServersInfo ser = new ServersInfo();
@@ -48,6 +49,13 @@ namespace ServersTool.ViewModels
             string remote = client.TcpClient.Client.RemoteEndPoint.ToString();
             
             SelectServer.ReceiveText += Encoding.Default.GetString(client.Buffer, 0, client.BufferLength);
+
+            string data = INIOperation.INIGetStringValue(path, section, SelectServer.ReceiveText, null);
+            if (data == null)
+                return;
+            byte[] aryData = Encoding.ASCII.GetBytes(data);
+            SelectServer.TcpServer.Send(SelectServer.ClientsList[0].ClientState, aryData);
+            SelectServer.SendText += data;
         }
 
         void TcpServer_ClientDisconnected(object sender, AsyncEventArgs e)
@@ -124,7 +132,7 @@ namespace ServersTool.ViewModels
         /// <param name="e"></param>
         public void Add_Click(object sender, RoutedEventArgs e)
         {
-
+            INIOperation.INIWriteValue(path, section, "<list_wall>", "<ack_list_wall,1,wall1,2,wall2>");
         }
     }
 }
