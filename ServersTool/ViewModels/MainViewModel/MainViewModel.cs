@@ -97,7 +97,11 @@ namespace ServersTool.ViewModels
             if (ServersList.Count == 0 || SelectServer == null)
                 return;
             SelectServer.TcpServer.Start();
-            SelectServer.IsStart = true;
+            App.Current.Dispatcher.Invoke((System.Action)(() =>
+            {
+                SelectServer.IsStart = true;
+
+            }));
         }
 
         public void ServerClose_Click(object sender, RoutedEventArgs e)
