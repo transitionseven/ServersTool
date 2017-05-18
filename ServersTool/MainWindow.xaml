@@ -40,7 +40,21 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0">
                             <GroupBox Header="数据接收窗口">
-                                <TextBox Text="{Binding SelectServer.ReceiveText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0">
+                                        <TextBox Text="{Binding SelectServer.ReceiveText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <Button Content="清空" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action ClearReceiveText_Click($view,$eventArgs)]"/>
+                                            <CheckBox Content="16进制显示" Margin="10" IsChecked="False"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </GroupBox>
                         </Border>
                         <GridSplitter Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="0"></GridSplitter>
@@ -58,7 +72,7 @@
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                             <Button Content="发送" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Send_Click($view,$eventArgs)]"/>
                                             <Button Content="添加到指令库" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Add_Click($view,$eventArgs)]"/>
-                                            <CheckBox Content="启用指令库" Margin="10" />
+                                            <CheckBox Content="启用指令库" Margin="10" IsChecked="True"/>
                                         </StackPanel>
                                     </Border>
                                 </Grid>
@@ -69,7 +83,7 @@
             </Grid>
         </Border>
         <Border Grid.Row="2">
-            <TextBlock Text=" Copyright (c) 2017 Lrsitod. All rights reserved." />
+            <TextBlock Text="copyright © 2017 Lrsitod. All rights reserved." />
         </Border>
     </Grid>
 </Window>

@@ -50,8 +50,7 @@
     <Border BorderBrush="Gray" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <TreeView x:Name="ServerTree" BorderThickness="1,0,0,0" ItemsSource="{Binding ServersList}" ItemTemplate="{StaticResource RootTemplate}" 
-                      > <!--cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($view,$eventArgs)]"-->
-              
+                      cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($view,$eventArgs)]"> 
             </TreeView>
         </ScrollViewer>
     </Border>

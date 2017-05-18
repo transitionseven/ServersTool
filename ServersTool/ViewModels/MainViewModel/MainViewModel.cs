@@ -10,7 +10,7 @@ using FileOperate.Ini;
 using System.IO;
 using Caliburn.Micro;
 using System.Diagnostics;
-
+using System.Windows.Controls;
 namespace ServersTool.ViewModels
 {
     public class MainViewModel : MainViewModelFunc
@@ -51,9 +51,11 @@ namespace ServersTool.ViewModels
             TCPClientState client = e._state as TCPClientState;
             string remote = client.TcpClient.Client.RemoteEndPoint.ToString();
 
-            SelectServer.ReceiveText += Encoding.Default.GetString(client.Buffer, 0, client.BufferLength);
+            string receStr = Encoding.Default.GetString(client.Buffer, 0, client.BufferLength);
 
-            string data = INIOperation.INIGetStringValue(path, section, SelectServer.ReceiveText, null);
+            SelectServer.ReceiveText += receStr;
+
+            string data = INIOperation.INIGetStringValue(path, section, receStr, null);
             if (data == null)
                 return;
             byte[] aryData = Encoding.ASCII.GetBytes(data);
@@ -163,6 +165,20 @@ namespace ServersTool.ViewModels
             {
 
             }
+        }
+
+        public void ClearReceiveText_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectServer != null)
+            {
+                SelectServer.ReceiveText = string.Empty;
+            }
+        }
+
+        public void SelectedItemChanged(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = e.Source as TreeViewItem;
+           
         }
     }
 }
