@@ -47,6 +47,19 @@ namespace ServersTool.ViewModels
             }
         }
 
+        private int level = 0;
+        public int Level
+        {
+            get { return level; }
+            set
+            {
+                level = value;
+                NotifyOfPropertyChange(() => Level);
+            }
+        }
+
+
+
         private ObservableCollection<ServersInfo> serversList = new ObservableCollection<ServersInfo>();
         public ObservableCollection<ServersInfo> ServersList
         {
@@ -73,6 +86,30 @@ namespace ServersTool.ViewModels
 
     public class ServersInfo:PropertyChangedBase
     {
+        private int level = 1;
+        public int Level
+        {
+            get { return level; }
+            set
+            {
+                level = value;
+                NotifyOfPropertyChange(() => Level);
+            }
+        }
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
+            }
+        }
+
+
+
         private bool isStart = false;
         public bool IsStart
         {
@@ -141,6 +178,36 @@ namespace ServersTool.ViewModels
         }
 
 
+       
+
+        private ClientsInfo selectClient;
+        public ClientsInfo SelectClient
+        {
+            get { return selectClient; }
+            set
+            {
+                selectClient = value;
+                NotifyOfPropertyChange(() => SelectClient);
+            }
+        }
+
+
+
+        private ObservableCollection<ClientsInfo> clientsList = new ObservableCollection<ClientsInfo>();
+        public ObservableCollection<ClientsInfo> ClientsList
+        {
+            get { return clientsList; }
+            set
+            {
+                clientsList = value;
+                NotifyOfPropertyChange(() => ClientsList);
+            }
+        }
+    }
+
+    public class ClientsInfo : PropertyChangedBase
+    {
+
         private string receiveText;
         public string ReceiveText
         {
@@ -163,20 +230,43 @@ namespace ServersTool.ViewModels
             }
         }
 
-        private ObservableCollection<ClientsInfo> clientsList = new ObservableCollection<ClientsInfo>();
-        public ObservableCollection<ClientsInfo> ClientsList
+        private bool isSelected;
+        public bool IsSelected
         {
-            get { return clientsList; }
+            get { return isSelected; }
             set
             {
-                clientsList = value;
-                NotifyOfPropertyChange(() => ClientsList);
+                isSelected = value;
+                NotifyOfPropertyChange(() => IsSelected);
             }
         }
-    }
 
-    public class ClientsInfo : PropertyChangedBase
-    {
+
+        private ServersInfo parentServer;
+        public ServersInfo ParentServer
+        {
+            get { return parentServer; }
+            set
+            {
+                parentServer = value;
+                NotifyOfPropertyChange(() => ParentServer);
+            }
+        }
+
+
+
+        private int level = 2;
+        public int Level
+        {
+            get { return level; }
+            set
+            {
+                level = value;
+                NotifyOfPropertyChange(() => Level);
+            }
+        }
+
+
         private bool isConnect = false;
         public bool IsConnect
         {
@@ -233,4 +323,5 @@ namespace ServersTool.ViewModels
         }
         
     }
+
 }

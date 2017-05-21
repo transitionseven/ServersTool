@@ -8,34 +8,30 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style TargetType="{x:Type TreeViewItem}">
-                <Setter Property="IsExpanded" Value="True"/>
+
+            <Style x:Key="servertreeborder" TargetType="Border">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="TextBlock.Foreground" Value="SkyBlue"/>
+                    </Trigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                        <Setter Property="Background" Value="SkyBlue"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="false">
+                        <Setter Property="Background" Value="White"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
             
-          
-            <HierarchicalDataTemplate x:Key="GroupsTemplate">
-                <StackPanel>
-                    <TextBlock Text="{Binding IpEndPort}">
-                        <TextBlock.Resources>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsConnect, Mode=TwoWay}" Value="true">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Resources>
-                    </TextBlock>
-                </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="RootTemplate" ItemsSource="{Binding ClientsList}" ItemTemplate="{StaticResource GroupsTemplate}">
+            <DataTemplate x:Key="serverclent">
                 <StackPanel Orientation="Horizontal">
-                    <Border x:Name="br" VerticalAlignment="Center">
+                    <Border x:Name="br" VerticalAlignment="Center" Tag="{Binding Level}" Style="{StaticResource servertreeborder}"
+                             cal:Message.Attach="[Event PreviewMouseLeftButtonDown]=[Action TreeItem_PreviewMouseLeftButtonDown($this,$eventArgs)]">
                         <TextBlock Text="{Binding IpEndPort}">
                             <TextBlock.Resources>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsStart, Mode=TwoWay}" Value="true">
+                                        <DataTrigger Binding="{Binding IsConnect, Mode=TwoWay}" Value="true">
                                             <Setter Property="Foreground" Value="Red"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -44,14 +40,46 @@
                         </TextBlock>
                     </Border>
                 </StackPanel>
-            </HierarchicalDataTemplate>
+            </DataTemplate>
+
+            <DataTemplate x:Key="serverroot">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="br" VerticalAlignment="Center" Tag="{Binding Level}" Style="{StaticResource servertreeborder}" 
+                                cal:Message.Attach="[Event PreviewMouseLeftButtonDown]=[Action TreeItem_PreviewMouseLeftButtonDown($this,$eventArgs)]">
+                            <TextBlock Text="{Binding IpEndPort}">
+                                <TextBlock.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsStart, Mode=TwoWay}" Value="true">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Resources>
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                    <ItemsControl Name="items" Margin="2" ItemsSource="{Binding ClientsList}" ItemTemplate="{StaticResource serverclent}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Border BorderBrush="Gray" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <TreeView x:Name="ServerTree" BorderThickness="1,0,0,0" ItemsSource="{Binding ServersList}" ItemTemplate="{StaticResource RootTemplate}" 
-                      cal:Message.Attach="[Event SelectedItemChanged] = [Action SelectedItemChanged($view,$eventArgs)]"> 
-            </TreeView>
+            <ItemsControl Name="items" Margin="2" Tag="{Binding Level}" ItemsSource="{Binding ServersList}" ItemTemplate="{StaticResource serverroot}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </ScrollViewer>
     </Border>
 </UserControl>

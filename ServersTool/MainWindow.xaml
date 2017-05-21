@@ -46,7 +46,7 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
-                                        <TextBox Text="{Binding SelectServer.ReceiveText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                                        <TextBox Text="{Binding SelectServer.SelectClient.ReceiveText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
                                     </Border>
                                     <Border Grid.Column="1">
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -66,11 +66,12 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
-                                        <TextBox Text="{Binding SelectServer.SendText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                                        <TextBox Text="{Binding SelectServer.SelectClient.SendText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
                                     </Border>
                                     <Border Grid.Column="1">
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                             <Button Content="发送" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Send_Click($view,$eventArgs)]"/>
+                                            <Button Content="清空" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action ClearSendText_Click($view,$eventArgs)]"/>
                                             <Button Content="添加到指令库" Width="75" Height="25" Margin="10" cal:Message.Attach="[Event Click]=[Action Add_Click($view,$eventArgs)]"/>
                                             <CheckBox Content="启用指令库" Margin="10" IsChecked="True"/>
                                         </StackPanel>

@@ -11,6 +11,7 @@ using System.IO;
 using Caliburn.Micro;
 using System.Diagnostics;
 using System.Windows.Controls;
+using System.Reflection;
 namespace ServersTool.ViewModels
 {
     public class MainViewModel : MainViewModelFunc
@@ -50,17 +51,27 @@ namespace ServersTool.ViewModels
         {
             TCPClientState client = e._state as TCPClientState;
             string remote = client.TcpClient.Client.RemoteEndPoint.ToString();
-
             string receStr = Encoding.Default.GetString(client.Buffer, 0, client.BufferLength);
-
-            SelectServer.ReceiveText += receStr;
+            ClientsInfo clientinfo = null;
+            foreach (var ser in ServersList)
+            {
+                foreach (var cle in ser.ClientsList)
+                {
+                    if (cle.IpEndPort.ToString() == remote)
+                    {
+                        clientinfo = cle;
+                        cle.ReceiveText += receStr;
+                        break;
+                    }
+                }
+            }
 
             string data = INIOperation.INIGetStringValue(path, section, receStr, null);
             if (data == null)
                 return;
             byte[] aryData = Encoding.ASCII.GetBytes(data);
-            SelectServer.TcpServer.Send(SelectServer.ClientsList[0].ClientState, aryData);
-            SelectServer.SendText += data;
+            clientinfo.ParentServer.TcpServer.Send(client, aryData);
+            clientinfo.SendText += data;
         }
 
         void TcpServer_ClientDisconnected(object sender, AsyncEventArgs e)
@@ -88,9 +99,21 @@ namespace ServersTool.ViewModels
             ClientsInfo clientinfo = new ClientsInfo();
             clientinfo.IpEndPort = client.TcpClient.Client.RemoteEndPoint;
             clientinfo.ClientState = client;
+            clientinfo.ParentServer = ServersList[temp];
             App.Current.Dispatcher.Invoke((System.Action)(() =>
             {
                 ServersList[temp].ClientsList.Add(clientinfo);
+                foreach (var ser in ServersList)
+                {
+                    ser.IsSelected = false;
+                    foreach (var tmp in ser.ClientsList)
+                    {
+                        tmp.IsSelected = false;
+                    }
+                }
+                SelectServer = ServersList[temp];
+                SelectServer.SelectClient = clientinfo;
+                SelectServer.SelectClient.IsSelected = true;
                 IsHaveClent = true;
             }));
         }
@@ -128,11 +151,12 @@ namespace ServersTool.ViewModels
         {
             if (SelectServer == null || SelectServer.ClientsList.Count == 0)
                 return;
-            if (string.IsNullOrEmpty(SelectServer.SendText))
+            if (string.IsNullOrEmpty(SelectServer.SelectClient.SendText))
                 return;
-            byte[] sendbytes = Encoding.Default.GetBytes(SelectServer.SendText);
-            SelectServer.TcpServer.Send(SelectServer.ClientsList[0].ClientState, sendbytes);
-            SelectServer.SendText = string.Empty;
+            byte[] sendbytes = Encoding.Default.GetBytes(SelectServer.SelectClient.SendText);
+
+            SelectServer.TcpServer.Send(SelectServer.SelectClient.ClientState, sendbytes);
+            SelectServer.SelectClient.SendText = string.Empty;
         }
 
         /// <summary>
@@ -144,8 +168,8 @@ namespace ServersTool.ViewModels
         {
             Views.ProtocolView view = new Views.ProtocolView();
             ViewModelBinder.Bind(this, view, null);
-            KeyText = SelectServer.ReceiveText;
-            ValueText = SelectServer.SendText;
+            KeyText = SelectServer.SelectClient.ReceiveText;
+            ValueText = SelectServer.SelectClient.SendText;
             if (view.ShowDialog() == true)
             {
                 if (string.IsNullOrEmpty(KeyText) || string.IsNullOrEmpty(ValueText))
@@ -171,14 +195,43 @@ namespace ServersTool.ViewModels
         {
             if (SelectServer != null)
             {
-                SelectServer.ReceiveText = string.Empty;
+                SelectServer.SelectClient.ReceiveText = string.Empty;
+            }
+        }
+        public void ClearSendText_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectServer != null)
+            {
+                SelectServer.SelectClient.SendText = string.Empty;
             }
         }
 
-        public void SelectedItemChanged(object sender, RoutedEventArgs e)
+        public void TreeItem_PreviewMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            TreeViewItem item = e.Source as TreeViewItem;
-           
+            foreach (var ser in ServersList)
+            {
+                ser.IsSelected = false;
+                foreach (var tmp in ser.ClientsList)
+                {
+                    tmp.IsSelected = false;
+                }
+            }
+            if (sender is ServersInfo)
+            {
+                SelectServer = sender as ServersInfo;
+                SelectServer.IsSelected = true;
+                if (SelectServer.ClientsList.Count > 0)
+                {
+                    SelectServer.SelectClient = SelectServer.ClientsList[0];
+                }
+            }
+            else if (sender is ClientsInfo)
+            {
+                ClientsInfo client = sender as ClientsInfo;
+                SelectServer = client.ParentServer;
+                SelectServer.SelectClient = client;
+                SelectServer.SelectClient.IsSelected = true;
+            }
         }
     }
 }
