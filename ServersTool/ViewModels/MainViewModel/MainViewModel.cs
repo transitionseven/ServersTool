@@ -140,7 +140,7 @@ namespace ServersTool.ViewModels
 
         public void Help_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("作者：Lrsitod  联系邮箱：jhongbo@163.com", "Help");
+            //MessageBox.Show("作者：Lrsitod  联系邮箱：jhongbo@163.com", "Help");
         }
         /// <summary>
         /// 发送指令
