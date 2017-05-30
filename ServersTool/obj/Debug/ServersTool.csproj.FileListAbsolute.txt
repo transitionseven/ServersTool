@@ -29,3 +29,5 @@ F:\GitHub工程\ServersTool\ServersTool\bin\Debug\FileOperate.dll
 F:\GitHub工程\ServersTool\ServersTool\bin\Debug\FileOperate.pdb
 F:\GitHub工程\ServersTool\ServersTool\obj\Debug\Views\ProtocolView.g.cs
 F:\GitHub工程\ServersTool\ServersTool\obj\Debug\Views\ProtocolView.baml
+F:\GitHub工程\ServersTool\ServersTool\obj\Debug\Views\NewServerView.baml
+F:\GitHub工程\ServersTool\ServersTool\obj\Debug\Views\NewServerView.g.cs

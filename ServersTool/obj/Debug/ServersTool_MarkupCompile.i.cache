@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\GitHub工程\ServersTool\ServersTool\App.xaml
-31535306824
+4-633127595
 
-141408576947
+15579652395
 182059062255
-MainWindow.xaml;Views\ProtocolView.xaml;Views\ServersTreeView.xaml;
+MainWindow.xaml;Views\NewServerView.xaml;Views\ProtocolView.xaml;Views\ServersTreeView.xaml;
 
-True
+False
 

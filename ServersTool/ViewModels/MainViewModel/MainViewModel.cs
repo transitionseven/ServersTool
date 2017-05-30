@@ -25,26 +25,38 @@ namespace ServersTool.ViewModels
         private string section = "protocol";
         public void NewServer_Click(object sender, RoutedEventArgs e)
         {
-            ServersInfo ser = new ServersInfo();
-            ser.IPAddr = IPAddress.Parse("0.0.0.0");
-            ser.Port = 8869;
-            ser.IpEndPort = new IPEndPoint(ser.IPAddr, ser.Port);
-            if (ServersList.Count != 0)
+            MainWindow wnd = sender as MainWindow;
+            Views.NewServerView view = new Views.NewServerView();
+            view.Owner = wnd;
+            if (view.ShowDialog() == true)
             {
-                int temp = ServersList.ToList<ServersInfo>().FindIndex(ex => ex.IpEndPort.ToString() == ser.IpEndPort.ToString());
-                if (temp != -1)
+                string ip = view.iptext.Text.Trim().ToString();
+                if (ip == "127.0.0.1")
                 {
-                    MessageBox.Show("该服务器已添加");
-                    return;
+                    ip = "0.0.0.0";
                 }
-            }
+                int port = int.Parse(view.porttext.Text.Trim().ToString());
+                ServersInfo ser = new ServersInfo();
+                ser.IPAddr = IPAddress.Parse(ip);
+                ser.Port = port;
+                ser.IpEndPort = new IPEndPoint(ser.IPAddr, ser.Port);
+                if (ServersList.Count != 0)
+                {
+                    int temp = ServersList.ToList<ServersInfo>().FindIndex(ex => ex.IpEndPort.ToString() == ser.IpEndPort.ToString());
+                    if (temp != -1)
+                    {
+                        MessageBox.Show("该服务器已添加");
+                        return;
+                    }
+                }
 
-            ser.TcpServer = new AsyncTCPServer(ser.Port);
-            ser.TcpServer.ClientConnected += TcpServer_ClientConnected;
-            ser.TcpServer.ClientDisconnected += TcpServer_ClientDisconnected;
-            ser.TcpServer.DataReceived += TcpServer_DataReceived;
-            ServersList.Add(ser);
-            SelectServer = ServersList[ServersList.Count - 1];
+                ser.TcpServer = new AsyncTCPServer(ser.IPAddr,ser.Port);
+                ser.TcpServer.ClientConnected += TcpServer_ClientConnected;
+                ser.TcpServer.ClientDisconnected += TcpServer_ClientDisconnected;
+                ser.TcpServer.DataReceived += TcpServer_DataReceived;
+                ServersList.Add(ser);
+                SelectServer = ServersList[ServersList.Count - 1];
+            }
         }
 
         void TcpServer_DataReceived(object sender, AsyncEventArgs e)

@@ -76,6 +76,9 @@
     <Compile Include="ViewModels\MainViewModel\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel\MainViewModelFunc.cs" />
     <Compile Include="ViewModels\MainViewModel\MainViewModelProperty.cs" />
+    <Compile Include="Views\NewServerView.xaml.cs">
+      <DependentUpon>NewServerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProtocolView.xaml.cs">
       <DependentUpon>ProtocolView.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\NewServerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProtocolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
