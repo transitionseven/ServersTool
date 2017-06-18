@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="NewServerView" 
         SizeToContent="WidthAndHeight"
-        WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         ResizeMode="NoResize">
     <Grid>
         <StackPanel Orientation="Vertical">
@@ -19,8 +19,8 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="地址：" Grid.Row="0" Grid.Column="0" Margin="10"/>
                     <TextBlock Text="端口：" Grid.Row="1" Grid.Column="0" Margin="10"/>
-                    <TextBox Name="iptext" Grid.Row="0" Grid.Column="1" Width="100" Height="30" VerticalContentAlignment="Center"/>
-                    <TextBox Name="porttext"  Grid.Row="1" Grid.Column="1" Width="100" Height="30" VerticalContentAlignment="Center"/>
+                    <TextBox Name="iptext" Text="127.0.0.1" Grid.Row="0" Grid.Column="1" Width="100" Height="30" VerticalContentAlignment="Center"/>
+                    <TextBox Name="porttext" Text="5000"  Grid.Row="1" Grid.Column="1" Width="100" Height="30" VerticalContentAlignment="Center"/>
                 </Grid>
             </Border>
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
